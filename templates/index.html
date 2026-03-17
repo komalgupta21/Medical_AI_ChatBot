@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Chatbot</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+        h1 { color: #2c3e50; text-align: center; }
+        #chat-box { border: 1px solid #ccc; height: 400px; overflow-y: scroll; padding: 15px; margin-bottom: 15px; border-radius: 8px; }
+        .user-msg { background: #3498db; color: white; padding: 8px 12px; border-radius: 8px; margin: 5px 0; text-align: right; }
+        .bot-msg { background: #ecf0f1; padding: 8px 12px; border-radius: 8px; margin: 5px 0; }
+        #input-area { display: flex; gap: 10px; }
+        #msg { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; }
+        button { padding: 10px 20px; background: #2c3e50; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #3498db; }
+    </style>
+</head>
+<body>
+    <h1>🏥 Medical Chatbot</h1>
+    <div id="chat-box"></div>
+    <div id="input-area">
+        <input type="text" id="msg" placeholder="Ask a medical question..." onkeypress="if(event.key=='Enter') sendMsg()"/>
+        <button onclick="sendMsg()">Send</button>
+    </div>
+    <script>
+        function sendMsg() {
+            var msg = document.getElementById("msg").value;
+            if (!msg) return;
+            var chatBox = document.getElementById("chat-box");
+            chatBox.innerHTML += "<div class='user-msg'>" + msg + "</div>";
+            document.getElementById("msg").value = "";
+            fetch("/get", {method: "POST", body: new URLSearchParams({msg: msg})})
+            .then(r => r.text())
+            .then(data => {
+                chatBox.innerHTML += "<div class='bot-msg'>🤖 " + data + "</div>";
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+        }
+    </script>
+</body>
+</html>
