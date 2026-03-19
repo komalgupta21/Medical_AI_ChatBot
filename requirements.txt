@@ -2,7 +2,6 @@ flask==3.0.3
 
 langchain==0.3.25
 langchain-community==0.3.25
-langchain-core==0.3.55
 langchain-text-splitters==0.3.8
 
 langchain-pinecone==0.2.0
